@@ -1,0 +1,164 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Copyright>2023 LisaCore</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Version>0.0.31</Version>
+    <SignAssembly>False</SignAssembly>
+    <PackageTags>Lisa;csharp;runtime;dynamic;code;execution </PackageTags>
+    <PackageReleaseNotes>Beta</PackageReleaseNotes>
+    <Description>CSharp dynamic runtime code execution</Description>
+    <Authors>d42y</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  
+
+  <ItemGroup>
+    <Compile Remove="edu\**" />
+    <Compile Remove="lib\vocabulary\**" />
+    <EmbeddedResource Remove="edu\**" />
+    <EmbeddedResource Remove="lib\vocabulary\**" />
+    <None Remove="edu\**" />
+    <None Remove="lib\vocabulary\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="lib\aiml\ahu.aiml" />
+    <None Remove="lib\aiml\chiller.aiml" />
+    <None Remove="lib\aiml\chws.aiml" />
+    <None Remove="lib\aiml\defaultsetpoints.aiml" />
+    <None Remove="lib\aiml\dictionary.aiml" />
+    <None Remove="lib\aiml\emotion.aiml" />
+    <None Remove="lib\aiml\geography.aiml" />
+    <None Remove="lib\aiml\hello.aiml" />
+    <None Remove="lib\aiml\hvac.aiml" />
+    <None Remove="lib\aiml\smartbuilding.aiml" />
+    <None Remove="lib\aiml\tasks.aiml" />
+    <None Remove="lib\aiml\vav.aiml" />
+    <None Remove="lib\dic\en-AU\index.aff" />
+    <None Remove="lib\dic\en-AU\index.dic" />
+    <None Remove="lib\dic\en-CA\index.aff" />
+    <None Remove="lib\dic\en-GB\index.aff" />
+    <None Remove="lib\dic\en-GB\index.dic" />
+    <None Remove="lib\dic\en-ZA\index.aff" />
+    <None Remove="lib\dic\en-ZA\index.dic" />
+    <None Remove="lib\dic\en\index.aff" />
+    <None Remove="lib\dic\en\index.dic" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="lib\aiml\ahu.aiml" />
+    <EmbeddedResource Include="lib\aiml\chiller.aiml" />
+    <EmbeddedResource Include="lib\aiml\chws.aiml" />
+    <EmbeddedResource Include="lib\aiml\defaultsetpoints.aiml" />
+    <EmbeddedResource Include="lib\aiml\dictionary.aiml" />
+    <EmbeddedResource Include="lib\aiml\emotion.aiml" />
+    <EmbeddedResource Include="lib\aiml\geography.aiml" />
+    <EmbeddedResource Include="lib\aiml\hello.aiml">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\aiml\hvac.aiml" />
+    <EmbeddedResource Include="lib\aiml\tasks.aiml">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\aiml\vav.aiml" />
+    <EmbeddedResource Include="lib\dic\en-AU\index.aff">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\dic\en-AU\index.dic">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\dic\en-CA\index.aff">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\dic\en-GB\index.aff">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\dic\en-GB\index.dic">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\dic\en-ZA\index.aff">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\dic\en-ZA\index.dic">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\dic\en\index.aff">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lib\dic\en\index.dic">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BrickSchema.Net" Version="1.3.17" />
+    <PackageReference Include="Mages" Version="2.0.1" />
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="4.6.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+    <PackageReference Include="Microsoft.ML" Version="2.0.1" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.15.0" />
+    <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="2.0.1" />
+    <PackageReference Include="Microsoft.ML.TimeSeries" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Recognizers.Text.DateTime" Version="1.8.8" />
+    <PackageReference Include="UnidecodeSharpCore" Version="2.0.1" />
+    <PackageReference Include="WeCantSpell.Hunspell" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="lib\dic\en-CA\index.dic">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="lib\dic\license.html">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    
+    <None Update="LICENSE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="Manuals\LisaCore User Manual - Code Processor.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="lib\models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="lib\aiml\smartbuilding.aiml" />
+  </ItemGroup>
+
+</Project>

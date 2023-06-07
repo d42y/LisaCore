@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+  <category>
+    <pattern>HELLO</pattern>
+    <template>
+        <condition name="Conditions.TimeOfDay">
+          <li value="morning">Good morning!</li>
+          <li value="afternoon">Good afternoon!</li>
+          <li value="evening">Good evening!</li>
+          <li value="night">Good night!</li>
+          <li>Hi there!</li>
+        </condition>
+      
+      <random>
+        <li> How can I assist you today?</li>
+        <li> How can I help you today?</li>
+        <li> What can I do for you?</li>
+        <li> What can we talk about today?</li>
+      </random>
+    </template>
+  </category>
+  <category>
+    <pattern>HI</pattern>
+    <template>
+      <srai>HELLO</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HI *</pattern>
+    <template>
+      <srai>HELLO</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HELLO *</pattern>
+    <template>
+      <srai>HELLO</srai>
+    </template>
+  </category>
+
+
+  <category>
+    <pattern>BYE</pattern>
+    <template>
+      <random>
+        <li>bye</li>
+        <li>It was nice talking to you</li>
+        <li>tata!!</li>
+        <li>Let's talk again tomorrow :) </li>
+        <li>I hope that you had a great time.</li>
+        <li>bye take care</li>
+      </random>
+    </template>
+  </category>
+
+  <category>
+    <pattern>BYE *</pattern>
+    <template>
+      <srai>BYE</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>GOOD BYE *</pattern>
+    <template>
+      <srai>BYE</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>GOOD BYE</pattern>
+    <template>
+      <srai>BYE</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>GOODBYE *</pattern>
+    <template>
+      <srai>BYE</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>GOODBYE</pattern>
+    <template>
+      <srai>BYE</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>AM DONE *</pattern>
+    <template>
+      <srai>BYE</srai>
+    </template>
+  </category>
+
+
+  <category>
+    <pattern>YES</pattern>
+    <template>
+      <random>
+        <li>so?</li>
+        <li>:)</li>
+        <li>and?</li>
+        <li>uh huh..</li>
+        <li>ummm....</li>
+        <li>hmmm....</li>
+      </random>
+    </template>
+  </category>
+
+  <category>
+    <pattern>OK</pattern>
+    <template>
+      <srai>YES</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>OKAY</pattern>
+    <template>
+      <srai>YES</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>oh</pattern>
+    <template>
+      <srai>YES</srai>
+    </template>
+  </category>
+
+
+  <category>
+    <pattern>HOW ARE YOU</pattern>
+    <template>
+      <random>
+        <li>I'am doing good. What about you?</li>
+        <li>I'am fine. What about you?</li>
+        <li>So yo asking how I am? Well am fine.... What about you?</li>
+        <li>I'm fine. What about you?</li>
+        <li>I'm okay. What about you?</li>
+      </random>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WASSUP</pattern>
+    <template>
+      <srai>HOW ARE YOU</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HOW ARE YOU DOING?</pattern>
+    <template>
+      <srai>HOW ARE YOU</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HOW ARE YOU DOING *</pattern>
+    <template>
+      <srai>HOW ARE YOU</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WHAT ABOUT YOU*</pattern>
+    <template>
+      <srai>HOW ARE YOU</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WBU*</pattern>
+    <template>
+      <srai>HOW ARE YOU</srai>
+    </template>
+  </category>
+
+</aiml>

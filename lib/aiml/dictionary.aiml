@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+  <category>
+    <pattern>How Does a Refrigerant Compressor Work?</pattern>
+        <template>
+          VAV stands for "Variable Air Volume."
+          <srai>VARIABLE AIR VOLUME</srai>
+    </template>
+  </category>
+  <category>
+    <pattern>VARIABLE AIR VOLUME</pattern>
+    <template>
+      It's a type of heating, ventilating, and air-conditioning (HVAC) system. Unlike constant air volume (CAV) systems, which supply a constant airflow at a variable temperature, VAV systems vary the airflow to maintain constant temperature.
+    </template>
+  </category>
+
+  
+
+</aiml>

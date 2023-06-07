@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+  <category>
+    <pattern>REMIND ME *</pattern>
+    <template>
+      <think>
+        <set name="reminder_task">
+          TASK: <star/>
+        </set>
+      </think>
+      I will remind you <star/>.
+    </template>
+  </category>
+
+  <category>
+    <pattern>SHOW ME ALL REMINDERS</pattern>
+    <template>
+      <srai>LIST ALL REMINDERS</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HOW MANY TASKS DO I HAVE</pattern>
+    <template>
+      <srai>GET TOTAL TASKS</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HOW MANY TASKS ARE OVERDUE</pattern>
+    <template>
+      <srai>GET OVERDUE TASKS</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HOW MANY OPEN TASKS DO I HAVE</pattern>
+    <template>
+      <srai>GET OPEN TASKS</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HOW MANY TASKS HAVE I RECENTLY CLOSED</pattern>
+    <template>
+      <srai>GET RECENTLY CLOSED TASKS</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HOW MANY TASKS ARE IN PROGRESS</pattern>
+    <template>
+      <srai>GET IN PROGRESS TASKS</srai>
+    </template>
+  </category>
+
+</aiml>
