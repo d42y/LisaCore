@@ -16,6 +16,6 @@ namespace LisaCore.BrickSchema.Models
         public string Text { get; set; } = string.Empty;
         public DateTime Timestamp { get ; set; }  = DateTime.Now;
         public ResultStatusesEnum Status { get; set; } = ResultStatusesEnum.Skipped;
-
+        public Dictionary<string, List<AnalyticsDataItem>> AnalyticsData { get; set; } = new Dictionary<string, List<AnalyticsDataItem>>();
     }
 }

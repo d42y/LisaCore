@@ -1,6 +1,9 @@
 ﻿using BrickSchema.Net.Behaviors.DataAccess;
 using BrickSchema.Net.Classes;
+using BrickSchema.Net.Classes.Points;
 using BrickSchema.Net.Shapes;
+using Google.Protobuf.WellKnownTypes;
+using LisaCore.BrickSchema.Models;
 using LisaCore.MachineLearning.Efficiency.Temperature;
 using System;
 using System.Collections.Generic;
@@ -88,17 +91,25 @@ namespace BrickSchema.Net.Behaviors.Analytics.Performance
                                         var result = new TemperatureEfficiency().CalculateEfficiency(temperatureData, _deadband);
                                         if (result.Count > 0)
                                         {
-
-                                            results.Add(new()
+                                            Result item = new Result();
+                                            item.BehaviorId = Id;
+                                            item.BehaviorType = Type;
+                                            item.BehaviorName = Name;
+                                            item.EntityId = Parent.Id;
+                                            item.Value = result[result.Count - 1].Efficiency;
+                                            item.Timestamp = result[result.Count - 1].Timestamp;
+                                            item.Status = LisaCore.BrickSchema.Models.ResultStatusesEnum.Success;
+                                            List<AnalyticsDataItem> efficiencies = new List<AnalyticsDataItem>();
+                                            List<AnalyticsDataItem> deviations = new List<AnalyticsDataItem>();
+                                            foreach (var ad in result)
                                             {
-                                                BehaviorId = Id,
-                                                BehaviorType = Type,
-                                                BehaviorName = Name,
-                                                EntityId = Parent.Id,
-                                                Value = result[result.Count - 1].Efficiency,
-                                                Timestamp = result[result.Count - 1].Timestamp,
-                                                Status = LisaCore.BrickSchema.Models.ResultStatusesEnum.Success
-                                            });
+                                                efficiencies.Add(new() { Timestamp = ad.Timestamp, Value = ad.Efficiency });
+                                                deviations.Add(new() { Timestamp = ad.Timestamp, Value = ad.DeviationScore });
+
+                                            }
+                                            item.AnalyticsData.Add("Zone Temperature Efficiency", efficiencies);
+                                            item.AnalyticsData.Add("Zone Temperature Deviation Score", efficiencies);
+                                            results.Add(item);
 
                                         }
                                         else
