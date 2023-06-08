@@ -13,6 +13,7 @@ using LisaCore.Nlp.BERT;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,8 +73,10 @@ namespace LisaCore
             }
         }
 
-        public BrickSchemaManager BrickSchemaManager { get { return _brick; } }
 
+      
+
+        #region Nlp
         public void InitNlp(string vocabularyFilePath, string ModelPath, bool useGpu = false)
         {
             _bert = new Bert(vocabularyFilePath, ModelPath, null, useGpu);
@@ -98,6 +101,24 @@ namespace LisaCore
             }
         }
 
+        public void SetNlpContext(Dictionary<int, string> context)
+        {
+            _bert?.SetContext(context);
+            _chatlBot.SetNlpContext(context);
+        }
+
+        #endregion Nlp
+
+        #region Brick
+        public BrickSchemaManager BrickSchemaManager { get { return _brick; } }
+
+
+        public List<BrickEntity> GetEquipmentEntities()
+        {
+            List<BrickEntity> equipments = _brick.GetEquipments();
+            return equipments;
+        }
+       
         public void SaveBrick()
         {
             if (_saveBrick)
@@ -502,6 +523,7 @@ namespace LisaCore
                 {
                     _saveBrick = true;
                 }
+                behavior.SetLogger(_logger);
                 entity.AddBehavior(behavior);
             }
 
@@ -535,11 +557,12 @@ namespace LisaCore
 
         }
 
-        public void SetNlpContext(Dictionary<int, string> context)
-        {
-            _bert?.SetContext(context);
-            _chatlBot.SetNlpContext(context);
-        }
+        #endregion Brick
+
+
+
+        #region Code Processor
+
         private void LoadDefaultNameSpaces()
         {
             _codeProcessor.AddNamespace("LisaCore.MachineLearning.Efficiency.AirFlow");
@@ -548,8 +571,6 @@ namespace LisaCore
             _codeProcessor.AddNamespace("LisaCore.MachineLearning.Efficiency.Temperature");
             _codeProcessor.AddNamespace("LisaCore.MachineLearning.DataModels");
         }
-
-        #region Code Processor
 
         public void AddReference(Assembly assembly)
         {

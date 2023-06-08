@@ -55,8 +55,8 @@ namespace BrickSchema.Net.Behaviors.Analytics.Performance
             }
             if (zoneTempPoint != null && zoneTempSetpoint != null)
             {
-                DateTime start = DateTime.Now;
-                DateTime end = start.AddMinutes(-60);
+                DateTime end = DateTime.Now;
+                DateTime start = end.AddMinutes(-60);
                 var history = zoneTempPoint.Behaviors.FirstOrDefault(x => x.Type.Equals(typeof(HistorizePointInMemory).Name)) as HistorizePointInMemory;
                 if (history != null)
                 {
@@ -76,7 +76,7 @@ namespace BrickSchema.Net.Behaviors.Analytics.Performance
                                     if (zoneSetpointHistory.Count > i)
                                     {
                                         setpoint = zoneSetpointHistory[i].Item2;   
-                                    } else if (temperatureData.Count > 0) { }
+                                    } else if (temperatureData.Count > 0)
                                     {
                                         setpoint = temperatureData[temperatureData.Count - 1].Setpoint;
                                     }
@@ -88,7 +88,7 @@ namespace BrickSchema.Net.Behaviors.Analytics.Performance
                                     try
                                     {
                                         ClearErrors(); //all checks are cleared
-                                        var result = new TemperatureEfficiency().CalculateEfficiency(temperatureData, _deadband);
+                                        var result = new TemperatureEfficiency(_logger).CalculateEfficiency(temperatureData, _deadband);
                                         if (result.Count > 0)
                                         {
                                             Result item = new Result();

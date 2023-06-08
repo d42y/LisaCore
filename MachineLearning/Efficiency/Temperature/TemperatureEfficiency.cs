@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.ML;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,17 +16,22 @@ namespace LisaCore.MachineLearning.Efficiency.Temperature
     {
         private readonly MLContext mlContext;
         private ITransformer _model;
-
-        public TemperatureEfficiency ()
+        private ILogger? _logger;
+        public TemperatureEfficiency (ILogger? logger = null)
         {
             mlContext = new MLContext();
+            _logger = logger;
         }
 
         public List<TemperatureEfficiencyResult> CalculateEfficiency (List<TemperatureData> tempData, double deadband)
         {
-
+            _logger?.LogInformation("Enter Calculate Efficiency");
+            _logger?.LogInformation(JsonConvert.SerializeObject(tempData, Formatting.Indented));
+            _logger?.LogInformation($"Deadband: {deadband}");
             var sortedData = TemperatureData.SortByTimestamp(tempData);
             var formattedData = TemperatureDataCalculated.FormatTemperatureData(sortedData);
+
+            _logger?.LogInformation(JsonConvert.SerializeObject(formattedData, Formatting.Indented));
             var efficencyData = CalculateEfficiency(formattedData, deadband);
             return efficencyData;
         }
@@ -39,6 +47,7 @@ namespace LisaCore.MachineLearning.Efficiency.Temperature
 
         public static List<TemperatureEfficiencyResult> CalculateEfficiency(List<TemperatureDataCalculated> temperatureDataList, double deadband)
         {
+
             List<TemperatureEfficiencyResult> efficiencyContributions = new List<TemperatureEfficiencyResult>();
 
             for (int i = 1; i < temperatureDataList.Count; i++)

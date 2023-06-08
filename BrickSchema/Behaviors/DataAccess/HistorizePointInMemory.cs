@@ -2,6 +2,7 @@
 using LisaCore.Helpers;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,7 +35,7 @@ namespace BrickSchema.Net.Behaviors.DataAccess
         {
             if (Parent is Classes.Point)
             {
-                var point = (Classes.Point)Parent;
+                var point = Parent as Classes.Point; 
                 point.OnValueChanged += HandleOnParentValueChange;
             }
 
@@ -56,7 +57,7 @@ namespace BrickSchema.Net.Behaviors.DataAccess
         {
             if (Parent is Classes.Point)
             {
-                var point = (Classes.Point)Parent;
+                var point = Parent as Classes.Point;
                 point.OnValueChanged -= HandleOnParentValueChange;
             }
 
@@ -68,6 +69,7 @@ namespace BrickSchema.Net.Behaviors.DataAccess
             if (Parent is Classes.Point)
             {
                 var point = (Classes.Point)Parent;
+                _logger?.LogInformation($"Historize Point [{point.Name}] Value [{point.Value}]");
                 lock (_lock)
                 {
                     using (var db = new HistorizePointInMemoryDbContext(point.Id))
@@ -89,7 +91,7 @@ namespace BrickSchema.Net.Behaviors.DataAccess
                         {//Insert
 
                             history.Values.Add(point.Value ?? 0.0);
-                            var ts = point.Timestamp.ToUniversalTime() - history.EndTimestamp;
+                            var ts = point.Timestamp.ToUniversalTime() - history.EndTimestamp.ToUniversalTime();
                             double interval = Math.Round(Math.Abs(ts.TotalSeconds), 0);
                             history.Intervals.Add(interval);
                             history.Qualities.Add(point.Quality);
