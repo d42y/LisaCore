@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Copyright>2023 LisaCore</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <Version>0.0.40</Version>
+    <Version>0.0.41</Version>
     <SignAssembly>False</SignAssembly>
     <PackageTags>Lisa;csharp;runtime;dynamic;code;execution </PackageTags>
     <PackageReleaseNotes>Beta</PackageReleaseNotes>
