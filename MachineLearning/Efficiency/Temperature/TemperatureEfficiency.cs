@@ -45,7 +45,7 @@ namespace LisaCore.MachineLearning.Efficiency.Temperature
          */
 
 
-        public static List<TemperatureEfficiencyResult> CalculateEfficiency(List<TemperatureDataCalculated> temperatureDataList, double deadband)
+        public List<TemperatureEfficiencyResult> CalculateEfficiency(List<TemperatureDataCalculated> temperatureDataList, double deadband)
         {
 
             List<TemperatureEfficiencyResult> efficiencyContributions = new List<TemperatureEfficiencyResult>();

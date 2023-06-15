@@ -1,13 +1,9 @@
 ﻿using BrickSchema.Net;
-using BrickSchema.Net.Behaviors.DataAccess;
 using BrickSchema.Net.Classes;
-using BrickSchema.Net.Classes.Equipments.HVACType;
 using BrickSchema.Net.Relationships;
+using LisaCore.Behaviors;
+using LisaCore.Behaviors.DataAccess;
 using LisaCore.Bot;
-using LisaCore.Bot.Conversations;
-using LisaCore.Bot.Conversations.Contracts;
-using LisaCore.Bot.Processor;
-using LisaCore.BrickSchema;
 using LisaCore.Interpreter;
 using LisaCore.Nlp.BERT;
 using Microsoft.CodeAnalysis.CSharp;
@@ -60,9 +56,8 @@ namespace LisaCore
         public void InitKnowledge(string aiKnowledgeDirectory)
         {
 
-
             Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(aiKnowledgeDirectory);
-            string brickFile = Path.Combine(aiKnowledgeDirectory, "brick.json");
+            string brickFile = Path.Combine(aiKnowledgeDirectory, "graph.json");
             _brick = new BrickSchemaManager(brickFile);
 
             _aiKnowledgeDirectory = aiKnowledgeDirectory;
@@ -72,9 +67,6 @@ namespace LisaCore
                 _chatlBot?.SetBert(_bert);
             }
         }
-
-
-      
 
         #region Nlp
         public void InitNlp(string vocabularyFilePath, string ModelPath, bool useGpu = false)
@@ -117,6 +109,14 @@ namespace LisaCore
         {
             List<BrickEntity> equipments = _brick.GetEquipments();
             return equipments;
+        }
+
+        public List<BrickBehavior> GetBehaviors(List<string> behaviorIds)
+        {
+            var brickBehaviors = _brick.GetBehaviors(behaviorIds);
+
+
+            return brickBehaviors;
         }
        
         public void SaveBrick()
@@ -372,7 +372,8 @@ namespace LisaCore
                         alarm.Name = name;
                         save = true;
                     }
-                    alarm.AddBehavior(new HistorizePointInMemory());
+            
+                    AddBehavior(alarm.Id, new HistorizePointInMemory());
                     break;
                 case PointTypes.Command:
                     var cmd = _brick.AddPointCommand(id);
@@ -381,7 +382,8 @@ namespace LisaCore
                         cmd.Name = name;
                         save = true;
                     }
-                    cmd.AddBehavior(new HistorizePointInMemory());
+
+                    AddBehavior(cmd.Id, new HistorizePointInMemory());
                     break;
                 case PointTypes.Parameter:
                     var parameter = _brick.AddPointParameter(id);
@@ -390,7 +392,8 @@ namespace LisaCore
                         parameter.Name = name;
                         save = true;
                     }
-                    parameter.AddBehavior(new HistorizePointInMemory());
+
+                    AddBehavior(parameter.Id, new HistorizePointInMemory());
                     break;
                 case PointTypes.Sensor:
                     var sensor = _brick.AddPointSensor(id);
@@ -399,7 +402,8 @@ namespace LisaCore
                         sensor.Name = name;
                         save = true;
                     }
-                    sensor.AddBehavior(new HistorizePointInMemory());
+
+                    AddBehavior(sensor.Id, new HistorizePointInMemory());
                     break;
                 case PointTypes.Setpoint:
                     var setpoint = _brick.AddPointSetpoint(id);
@@ -408,7 +412,7 @@ namespace LisaCore
                         setpoint.Name = name;
                         save = true;
                     }
-                    setpoint.AddBehavior(new HistorizePointInMemory());
+                    AddBehavior(setpoint.Id, new HistorizePointInMemory());
                     break;
                 case PointTypes.Status:
                     var status = _brick.AddPointStatus(id);
@@ -417,7 +421,8 @@ namespace LisaCore
                         status.Name = name;
                         save = true;
                     }
-                    status.AddBehavior(new HistorizePointInMemory());
+
+                    AddBehavior(status.Id, new HistorizePointInMemory());
                     break;
             }
             if (save)
@@ -442,7 +447,6 @@ namespace LisaCore
         {
             return _brick.GetTag(name);
         }
-
 
         public void AddRelationship(RelationshipTypes type, string id, string parentId)
         {
@@ -558,8 +562,6 @@ namespace LisaCore
         }
 
         #endregion Brick
-
-
 
         #region Code Processor
 

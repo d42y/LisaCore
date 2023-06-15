@@ -8,7 +8,8 @@ namespace LisaCore.MachineLearning.Efficiency.Chiller
 {
     public class ChillerDataCalculated : ChillerData
     {
-        public double Load { get; set; } //Btu
+        public double Btu { get; set; } //Btu
+        public double KwTon { get; set; } //kw per ton
         public double COP { get; set; }
     }
 }

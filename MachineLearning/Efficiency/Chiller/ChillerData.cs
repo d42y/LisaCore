@@ -9,9 +9,11 @@ namespace LisaCore.MachineLearning.Efficiency.Chiller
     public class ChillerData
     {
         public DateTime Timestamp { get; set; }
+        public double CondenserWaterTemperature { get; set; } // Condending water temperature in degree Fahrenheit
         public double FlowRate { get; set; } // Flow rate in gallons per minute (GPM)
         public double InletTemperature { get; set; } // Inlet water temperature in degrees Fahrenheit
         public double OutletTemperature { get; set; } // Outlet water temperature in degrees Fahrenheit
         public double EnergyInputKW { get; set; }
+
     }
 }

@@ -18,19 +18,6 @@ namespace LisaCore.Nlp.BERT
         private readonly Tokenizer _tokenizer;
         private Predictor _predictor;
 
-        //public Bert(bool useGpu = false)
-        //{
-        //    _vocabulary = FileReader.LoadVocabFromEmbeddedResource("LisaCore.lib.models.bert.vocab.txt");
-        //    _tokenizer = new Tokenizer(_vocabulary);
-
-        //    var trainer = new Trainer();
-        //    var trainedModel = trainer.BuidAndTrain(useGpu);
-        //    _predictor = new Predictor(trainedModel);
-
-        //    _context = FileReader.LoadContextFromEmbeddedResource("LisaCore.lib.models.bert.context.txt");
-
-        //}
-
         public Bert(string vocabularyFilePath, string bertModelPath, string? contextFilePath = null, bool useGpu = false)
         {
             _vocabulary = FileReader.LoadVocabFromFile(vocabularyFilePath);
@@ -39,10 +26,7 @@ namespace LisaCore.Nlp.BERT
             var trainer = new Trainer();
             var trainedModel = trainer.BuidAndTrain(bertModelPath, useGpu);
             _predictor = new Predictor(trainedModel);
-            if (!string.IsNullOrEmpty(contextFilePath) && File.Exists(contextFilePath??string.Empty))
-            {
-                _context = FileReader.LoadContextFromFile(@"C:\Code\lib\models\bert\context.txt");
-            }
+            LoadContextFromFile(contextFilePath);
         }
 
         public void SetContext(Dictionary<int, string> context)
@@ -54,7 +38,7 @@ namespace LisaCore.Nlp.BERT
         {
             if (!string.IsNullOrEmpty(contextFilePath) && File.Exists(contextFilePath))
             {
-                _context = FileReader.LoadContextFromFile(@"C:\Code\lib\models\bert\context.txt");
+                _context = FileReader.LoadContextFromFile(contextFilePath);
             }
         }
         public (List<string> tokens, float probability) Predict(string question)
