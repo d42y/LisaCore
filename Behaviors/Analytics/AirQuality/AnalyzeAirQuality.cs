@@ -10,8 +10,8 @@ namespace LisaCore.Behaviors.Analytics.AirQuality
     /// <summary>
     /// AnalyzeAirQuality: Assess air quality in real-time, considering factors such as pollutant levels and ventilation.
     /// </summary>
-    public class AnalyzeAirQuality : BrickBehavior
-    {
-        public AnalyzeAirQuality() : base("", typeof(AnalyzeAirQuality).Name) { }
-    }
+    //public class AnalyzeAirQuality : BrickBehavior
+    //{
+    //    public AnalyzeAirQuality() : base("", typeof(AnalyzeAirQuality).Name) { }
+    //}
 }

@@ -1,5 +1,5 @@
 ﻿using BrickSchema.Net.Classes.Points;
-using LisaCore.Behaviors.DataAccess;
+using LisaCore.Behaviors.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;

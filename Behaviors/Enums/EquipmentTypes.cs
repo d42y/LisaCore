@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LisaCore.Behaviors
+namespace LisaCore.Behaviors.Enums
 {
     public enum EquipmentTypes
     {

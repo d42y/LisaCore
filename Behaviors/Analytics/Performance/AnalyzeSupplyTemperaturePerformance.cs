@@ -1,17 +1,20 @@
 ﻿using BrickSchema.Net;
-
 using LisaCore.Behaviors.DataAccess;
 using LisaCore.Behaviors.Enums;
 using LisaCore.Behaviors.Models;
 using LisaCore.MachineLearning.Efficiency.Temperature;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LisaCore.Behaviors.Analytics.Performance
 {
     /// <summary>
     /// AnalyzeZonePerformance: Evaluate the HVAC performance for individual zones or areas.
     /// </summary>
-    public class AnalyzeZoneTemperaturePerformance : BrickBehavior
+    public class AnalyzeSupplyTemperaturePerformance : BrickBehavior
     {
         public delegate void AnalyticsResultFunction(List<Result> results);
         private readonly AnalyticsResultFunction _analyticsResultFuntion;
@@ -20,11 +23,11 @@ namespace LisaCore.Behaviors.Analytics.Performance
         private bool _isExecuting;
         private DateTime _lastExecutionTime;
 
-        public AnalyzeZoneTemperaturePerformance(AnalyticsResultFunction analyticsResultCallBackFuntion, double deadband, int intervalMinute = 15, int weight = 1)
-            : base(typeof(AnalyzeZoneTemperaturePerformance).Name, BehaviorTypes.Analytics.ToString() , "Zone Temperature Conformance", weight)
+        public AnalyzeSupplyTemperaturePerformance(AnalyticsResultFunction analyticsResultCallBackFuntion, double deadband, int intervalMinute = 15, int weight = 1)
+            : base(typeof(AnalyzeZoneTemperaturePerformance).Name, BehaviorTypes.Analytics.ToString(), "Supply Temperature Conformance", weight)
         {
             _pollRate = intervalMinute * 60;
-            
+
             _analyticsResultFuntion = analyticsResultCallBackFuntion;
             _deadband = deadband;
             _isExecuting = false;
@@ -36,14 +39,14 @@ namespace LisaCore.Behaviors.Analytics.Performance
             if (_lastExecutionTime.AddSeconds(_pollRate) > DateTime.Now || _isExecuting) return; //not time to run or is running already
 
             _isExecuting = true;
-            
-           
+
+
 
             try
             {
                 List<Result> results = new();
-                BrickSchema.Net.Classes.Point? zoneTempPoint = null;
-                BrickSchema.Net.Classes.Point? zoneTempSetpoint = null;
+                BrickSchema.Net.Classes.Point? supplyTempPoint = null;
+                BrickSchema.Net.Classes.Point? supplyTempSetpoint = null;
 
                 var points = Parent.GetPointEntities();
                 foreach (var point in points)
@@ -51,27 +54,27 @@ namespace LisaCore.Behaviors.Analytics.Performance
                     var tags = point.GetTags();
                     foreach (var tag in tags)
                     {
-                        if (tag.Name.Equals("Zone Air Temperature Sensor"))
+                        if (tag.Name.Equals("Supply Air Temperature Sensor"))
                         {
-                            zoneTempPoint = point;
+                            supplyTempPoint = point;
                         }
-                        else if (tag.Name.Equals("Effective Zone Air Temperature Setpoint"))
+                        else if (tag.Name.Equals("Supply Air Temperature Setpoint"))
                         {
-                            zoneTempSetpoint = point;
+                            supplyTempSetpoint = point;
                         }
                     }
                 }
-                if (zoneTempPoint != null && zoneTempSetpoint != null)
+                if (supplyTempPoint != null && supplyTempSetpoint != null)
                 {
                     DateTime end = DateTime.Now;
                     DateTime start = end.AddMinutes(-60);
-                    var history = zoneTempPoint.Behaviors.FirstOrDefault(x => x.Type.Equals(typeof(HistorizePointInMemory).Name)) as HistorizePointInMemory;
+                    var history = supplyTempPoint.Behaviors.FirstOrDefault(x => x.Type.Equals(typeof(HistorizePointInMemory).Name)) as HistorizePointInMemory;
                     if (history != null)
                     {
                         var zoneTempHistory = history.GetHistory(start, end, 1);
                         if (zoneTempHistory.Count > 0)
                         {
-                            history = zoneTempSetpoint.Behaviors.FirstOrDefault(x => x.Type.Equals(typeof(HistorizePointInMemory).Name)) as HistorizePointInMemory;
+                            history = supplyTempSetpoint.Behaviors.FirstOrDefault(x => x.Type.Equals(typeof(HistorizePointInMemory).Name)) as HistorizePointInMemory;
                             if (history != null)
                             {
                                 var zoneSetpointHistory = history.GetHistory(start, end, 1);
@@ -116,9 +119,9 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                                     deviations.Add(new() { Timestamp = ad.Timestamp, Value = ad.DeviationScore });
 
                                                 }
-                                                item.AnalyticsData.Add("Zone Temperature Conformance", efficiencies);
-                                                
-                                                item.AnalyticsData.Add("Zone Temperature Deviation Score", efficiencies);
+                                                item.AnalyticsData.Add("Supply Temperature Conformance", efficiencies);
+
+                                                item.AnalyticsData.Add("Supply Temperature Deviation Score", efficiencies);
                                                 results.Add(item);
                                                 AddOrUpdateProperty(BrickSchema.Net.EntityProperties.PropertiesEnum.Conformance, item.Value);
                                                 AddOrUpdateProperty(BrickSchema.Net.EntityProperties.PropertiesEnum.Deviation, result[result.Count - 1].DeviationScore);
@@ -208,7 +211,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                     EntityId = Parent.Id,
                                     Value = null,
                                     Timestamp = DateTime.Now,
-                                    Text = "No Zone Temperature history.",
+                                    Text = "No Supply Temperature history.",
                                     Status = ResultStatuseTypes.Skipped
 
                                 });
@@ -236,9 +239,9 @@ namespace LisaCore.Behaviors.Analytics.Performance
                 }
                 else
                 {
-                    if (zoneTempPoint == null)
+                    if (supplyTempPoint == null)
                     {
-                        if (NotifyError("zoneTempPoint"))
+                        if (NotifyError("supplyTempPoint"))
                         {
                             results.Add(new()
                             {
@@ -248,15 +251,15 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                 EntityId = Parent.Id,
                                 Value = null,
                                 Timestamp = DateTime.Now,
-                                Text = "Missing point with tag [Zone Air Temperature Sensor]",
+                                Text = "Missing point with tag [Supply Air Temperature Sensor]",
                                 Status = ResultStatuseTypes.Skipped
 
                             });
                         }
                     }
-                    if (zoneTempSetpoint == null)
+                    if (supplyTempSetpoint == null)
                     {
-                        if (NotifyError("zoneTempSetpoint"))
+                        if (NotifyError("supplyTempSetpoint"))
                         {
                             results.Add(new()
                             {
@@ -266,7 +269,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                 EntityId = Parent.Id,
                                 Value = null,
                                 Timestamp = DateTime.Now,
-                                Text = "Missing point with tag [Effective Zone Air Temperature Setpoint]",
+                                Text = "Missing point with tag [Supply Air Temperature Setpoint]",
                                 Status = ResultStatuseTypes.Skipped
 
                             });
@@ -275,7 +278,8 @@ namespace LisaCore.Behaviors.Analytics.Performance
 
                 }
                 _analyticsResultFuntion(results);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _isExecuting = false;
                 throw;
@@ -284,8 +288,8 @@ namespace LisaCore.Behaviors.Analytics.Performance
             _lastExecutionTime = DateTime.Now;
 
         } //end execute
-        
 
-        
+
+
     }
 }

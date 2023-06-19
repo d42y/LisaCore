@@ -1,7 +1,7 @@
 ﻿using BrickSchema.Net.Classes.Points;
 using System.ComponentModel.DataAnnotations;
 
-namespace LisaCore.Behaviors.DataAccess
+namespace LisaCore.Behaviors.Models
 {
     internal class PointHistory
     {

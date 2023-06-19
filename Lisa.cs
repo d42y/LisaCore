@@ -3,6 +3,7 @@ using BrickSchema.Net.Classes;
 using BrickSchema.Net.Relationships;
 using LisaCore.Behaviors;
 using LisaCore.Behaviors.DataAccess;
+using LisaCore.Behaviors.Enums;
 using LisaCore.Bot;
 using LisaCore.Interpreter;
 using LisaCore.Nlp.BERT;
@@ -31,7 +32,7 @@ namespace LisaCore
         private Bert? _bert = null;
         private BrickSchemaManager _brick;
         private bool _saveBrick = false;
-
+        private BehaviorManager _behaviorManager;
         public Lisa(ILogger? logger = null)
         {
             _logger = logger;
@@ -43,6 +44,7 @@ namespace LisaCore
             _logger = logger;
             InitCodeProcessor();
             InitKnowledge(aiKnowledgeDirectory);
+            _behaviorManager = new BehaviorManager();
         }
 
         private void InitCodeProcessor()
@@ -105,15 +107,21 @@ namespace LisaCore
         public BrickSchemaManager BrickSchemaManager { get { return _brick; } }
 
 
-        public List<BrickEntity> GetEquipmentEntities()
+        public List<BrickEntity> GetEquipmentEntities(List<string>? equipmentIds = null)
         {
-            List<BrickEntity> equipments = _brick.GetEquipments();
+            List<BrickEntity> equipments = _brick.GetEquipments(equipmentIds ?? new()); ;
             return equipments;
         }
 
-        public List<BrickBehavior> GetBehaviors(List<string> behaviorIds)
+        public List<BrickBehavior> GetEquipmentBehaviors(string equipmentId)
         {
-            var brickBehaviors = _brick.GetBehaviors(behaviorIds);
+            var brickBehaviors = _brick.GetEquipmentBehaviors(equipmentId);
+            return brickBehaviors;
+        }
+
+        public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null)
+        {
+            var brickBehaviors = _brick.GetBehaviors(behaviorIds??new());
 
 
             return brickBehaviors;
@@ -528,6 +536,7 @@ namespace LisaCore
                     _saveBrick = true;
                 }
                 behavior.SetLogger(_logger);
+                _behaviorManager.Subscribe(behavior.OnTimerTick);
                 entity.AddBehavior(behavior);
             }
 

@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LisaCore.Behaviors.Models
+namespace LisaCore.Behaviors.Enums
 {
-    public enum ResultStatusesEnum
+    public enum BehaviorTypes
     {
-        Success,
-        Failure,
-        Skipped
+        Analytics,
+        DataAccess
     }
 }

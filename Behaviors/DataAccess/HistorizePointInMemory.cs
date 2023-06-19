@@ -1,6 +1,8 @@
 ﻿using BrickSchema.Net;
 using BrickSchema.Net.Classes.Points;
 using Google.Protobuf.WellKnownTypes;
+using LisaCore.Behaviors.Enums;
+using LisaCore.Behaviors.Models;
 using LisaCore.Helpers;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -18,23 +20,24 @@ using System.Threading.Tasks;
 namespace LisaCore.Behaviors.DataAccess
 {
 
-    public class HistorizePointInMemory : BrickBehavior, IDisposable
+    public class HistorizePointInMemory : BrickBehavior
     {
 
         private readonly object _lock = new object();
         private readonly int _keepDays;
+        private int _pollRate;
+        private bool _isExecuting;
+        private DateTime _lastExecutionTime;
 
-
-        public HistorizePointInMemory(int keepDays = 90) : base("Historize Point In Memory", typeof(HistorizePointInMemory).Name)
+        public HistorizePointInMemory(int keepDays = 90) : base(typeof(HistorizePointInMemory).Name, BehaviorTypes.DataAccess.ToString(), "Historize Point In Memory", 1)
         {
             _keepDays = keepDays;
-
-
-
-            BehaviorTimer = null;
+            _pollRate = 60 * 60;
+            _isExecuting = false;
+            _lastExecutionTime = DateTime.Now;
         }
 
-        public override void Start()
+        protected override void Load()
         {
             if (Parent is BrickSchema.Net.Classes.Point)
             {
@@ -49,24 +52,17 @@ namespace LisaCore.Behaviors.DataAccess
             }
 
 
-            // Convert pollRate from seconds to milliseconds, as required by Timer
-            int pollRateMilliseconds = 60 * 60 * 1000;
-
-            // Create and start the timer
-            BehaviorTimer = new Timer(OnTimerTick, null, pollRateMilliseconds, pollRateMilliseconds);
         }
 
-        public override void Stop()
+        protected override void Unload()
         {
             if (Parent is BrickSchema.Net.Classes.Point)
             {
                 var point = Parent as BrickSchema.Net.Classes.Point;
                 point.OnValueChanged -= HandleOnParentValueChange;
             }
-
-
-            BehaviorTimer?.Dispose();
         }
+
         private void HandleOnParentValueChange(object? sender, EventArgs e)
         {
             if (Parent is BrickSchema.Net.Classes.Point)
@@ -146,32 +142,40 @@ namespace LisaCore.Behaviors.DataAccess
             return results;
         }
 
-        public override void OnTimerTick(object? state)
+        protected override void Execute()
         {
-            if (Parent is BrickSchema.Net.Classes.Point)
+            if (_lastExecutionTime.AddSeconds(_pollRate) > DateTime.Now || _isExecuting) { return; }
+            _isExecuting = true;
+            try
             {
-                var point = (BrickSchema.Net.Classes.Point)Parent;
-                lock (_lock)
+                if (Parent is BrickSchema.Net.Classes.Point)
                 {
-                    using (var db = new HistorizePointInMemoryDbContext(point.Id))
+                    var point = (BrickSchema.Net.Classes.Point)Parent;
+                    lock (_lock)
                     {
-                        // Find all entries that are full and where EndTimestamp is older than _keepDays
-                        var entriesToDelete = db.PointHistories.Where(x => x.PointId.Equals(point.Id) && x.Full == true && DateTime.UtcNow - x.EndTimestamp > TimeSpan.FromDays(_keepDays));
+                        using (var db = new HistorizePointInMemoryDbContext(point.Id))
+                        {
+                            // Find all entries that are full and where EndTimestamp is older than _keepDays
+                            var entriesToDelete = db.PointHistories.Where(x => x.PointId.Equals(point.Id) && x.Full == true && DateTime.UtcNow - x.EndTimestamp > TimeSpan.FromDays(_keepDays));
 
-                        // Remove these entries from the database
-                        db.PointHistories.RemoveRange(entriesToDelete);
+                            // Remove these entries from the database
+                            db.PointHistories.RemoveRange(entriesToDelete);
 
-                        // Save changes to the database
-                        db.SaveChanges();
+                            // Save changes to the database
+                            db.SaveChanges();
+                        }
                     }
                 }
+            } catch (Exception ex)
+            {
+                _isExecuting = false;
+                throw;
             }
+            _isExecuting = false;
+            _lastExecutionTime = DateTime.Now;
         }
 
-        public void Dispose()
-        {
-            BehaviorTimer?.Dispose();
-        }
+        
 
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LisaCore.Behaviors.Enums;
 
 namespace LisaCore.Behaviors.Models
 {
@@ -15,7 +16,7 @@ namespace LisaCore.Behaviors.Models
         public double? Value { get; set; } = null;
         public string Text { get; set; } = string.Empty;
         public DateTime Timestamp { get; set; } = DateTime.Now;
-        public ResultStatusesEnum Status { get; set; } = ResultStatusesEnum.Skipped;
+        public ResultStatuseTypes Status { get; set; } = ResultStatuseTypes.Skipped;
         public Dictionary<string, List<AnalyticsDataItem>> AnalyticsData { get; set; } = new Dictionary<string, List<AnalyticsDataItem>>();
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BrickSchema.Net;
+using LisaCore.Behaviors.Enums;
 using LisaCore.Behaviors.Models;
 using static LisaCore.Behaviors.DataAccess.ReadPoint;
 
@@ -16,15 +17,18 @@ namespace LisaCore.Behaviors.DataAccess
     {
         public delegate bool WritePointFunction(Point point);
         private readonly WritePointFunction _writeFunction;
+        private int _pollRate;
+        private bool _isExecuting;
+        private DateTime _lastExecutionTime;
 
-        public WritePoint(WritePointFunction function) : base("Write Point Value", typeof(WritePoint).Name)
+        public WritePoint(WritePointFunction function) : base(typeof(WritePoint).Name, BehaviorTypes.DataAccess.ToString(), "Write Point Value", 1)
         {
             _writeFunction = function;
 
 
         }
 
-        public override void Start()
+        protected override void Load()
         {
             if (Parent?.Type?.Equals(typeof(BrickSchema.Net.Classes.Point).Name) ?? false)
             {
@@ -34,7 +38,7 @@ namespace LisaCore.Behaviors.DataAccess
             }
         }
 
-        public override void Stop()
+        protected override void Unload()
         {
 
             if (Parent?.Type?.Equals(typeof(BrickSchema.Net.Classes.Point).Name) ?? false)

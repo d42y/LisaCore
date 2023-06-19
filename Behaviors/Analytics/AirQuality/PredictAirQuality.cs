@@ -10,8 +10,8 @@ namespace LisaCore.Behaviors.Analytics.AirQuality
     /// <summary>
     /// PredictAirQuality: Forecast future air quality based on current conditions and trends.
     /// </summary>
-    public class PredictAirQuality : BrickBehavior
-    {
-        public PredictAirQuality() : base("", typeof(PredictAirQuality).Name) { }
-    }
+    //public class PredictAirQuality : BrickBehavior
+    //{
+    //    public PredictAirQuality() : base("", typeof(PredictAirQuality).Name) { }
+    //}
 }
