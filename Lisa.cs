@@ -135,6 +135,12 @@ namespace LisaCore
             }
         }
 
+        public void AddTenant(string id, string name)
+        {
+            var tenant = _brick.AddTenant(id);
+            tenant.Name = name;
+        }
+
         public void AddLocation(LocationTypes type, string id, string name)
         {
             bool save = !_brick.IsEntity(id);

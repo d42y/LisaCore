@@ -16,7 +16,7 @@ namespace LisaCore.Behaviors.Models
         public double? Value { get; set; } = null;
         public string Text { get; set; } = string.Empty;
         public DateTime Timestamp { get; set; } = DateTime.Now;
-        public ResultStatuseTypes Status { get; set; } = ResultStatuseTypes.Skipped;
+        public ResultStatusTypes Status { get; set; } = ResultStatusTypes.Skipped;
         public Dictionary<string, List<AnalyticsDataItem>> AnalyticsData { get; set; } = new Dictionary<string, List<AnalyticsDataItem>>();
     }
 }

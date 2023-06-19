@@ -110,7 +110,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                                 item.EntityId = Parent.Id;
                                                 item.Value = result[result.Count - 1].Efficiency;
                                                 item.Timestamp = result[result.Count - 1].Timestamp;
-                                                item.Status = ResultStatuseTypes.Success;
+                                                item.Status = ResultStatusTypes.Success;
                                                 List<AnalyticsDataItem> efficiencies = new List<AnalyticsDataItem>();
                                                 List<AnalyticsDataItem> deviations = new List<AnalyticsDataItem>();
                                                 foreach (var ad in result)
@@ -137,7 +137,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                                     Value = null,
                                                     Timestamp = DateTime.Now,
                                                     Text = "Analytics result has no value.",
-                                                    Status = ResultStatuseTypes.Failure
+                                                    Status = ResultStatusTypes.Failure
 
                                                 });
 
@@ -154,7 +154,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                                 Value = null,
                                                 Timestamp = DateTime.Now,
                                                 Text = $"Exception:{ex.Message}",
-                                                Status = ResultStatuseTypes.Failure
+                                                Status = ResultStatusTypes.Failure
 
                                             });
                                         }
@@ -174,7 +174,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                             Value = null,
                                             Timestamp = DateTime.Now,
                                             Text = "No Zone Temperature Setpoint history.",
-                                            Status = ResultStatuseTypes.Skipped
+                                            Status = ResultStatusTypes.Skipped
 
                                         });
                                     }
@@ -193,7 +193,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                         Value = null,
                                         Timestamp = DateTime.Now,
                                         Text = "Temperature sensor point doesn't have a historian behavior",
-                                        Status = ResultStatuseTypes.Skipped
+                                        Status = ResultStatusTypes.Skipped
 
                                     });
                                 }
@@ -212,7 +212,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                     Value = null,
                                     Timestamp = DateTime.Now,
                                     Text = "No Supply Temperature history.",
-                                    Status = ResultStatuseTypes.Skipped
+                                    Status = ResultStatusTypes.Skipped
 
                                 });
                             }
@@ -231,7 +231,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                 Value = null,
                                 Timestamp = DateTime.Now,
                                 Text = "Temperature sensor point doesn't have a historian behavior.",
-                                Status = ResultStatuseTypes.Skipped
+                                Status = ResultStatusTypes.Skipped
 
                             });
                         }
@@ -252,7 +252,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                 Value = null,
                                 Timestamp = DateTime.Now,
                                 Text = "Missing point with tag [Supply Air Temperature Sensor]",
-                                Status = ResultStatuseTypes.Skipped
+                                Status = ResultStatusTypes.Skipped
 
                             });
                         }
@@ -270,7 +270,7 @@ namespace LisaCore.Behaviors.Analytics.Performance
                                 Value = null,
                                 Timestamp = DateTime.Now,
                                 Text = "Missing point with tag [Supply Air Temperature Setpoint]",
-                                Status = ResultStatuseTypes.Skipped
+                                Status = ResultStatusTypes.Skipped
 
                             });
                         }

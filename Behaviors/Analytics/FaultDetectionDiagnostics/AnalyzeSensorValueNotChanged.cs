@@ -52,7 +52,7 @@ namespace LisaCore.Behaviors.Analytics.FaultDetectionDiagnostics
                         item.EntityId = Parent.Id;
                         item.Value = conformance;
                         item.Timestamp = DateTime.Now;
-                        item.Status = ResultStatuseTypes.Success;
+                        item.Status = ResultStatusTypes.Success;
                         List<AnalyticsDataItem> efficiencies = new List<AnalyticsDataItem>();
                         List<AnalyticsDataItem> deviations = new List<AnalyticsDataItem>();
 
@@ -79,7 +79,7 @@ namespace LisaCore.Behaviors.Analytics.FaultDetectionDiagnostics
                                 Value = null,
                                 Timestamp = DateTime.Now,
                                 Text = "Sensor Value is Null.",
-                                Status = ResultStatuseTypes.Skipped
+                                Status = ResultStatusTypes.Skipped
 
                             });
                         }

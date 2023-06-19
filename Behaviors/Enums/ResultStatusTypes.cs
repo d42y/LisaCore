@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LisaCore.Behaviors.Enums
 {
-    public enum ResultStatuseTypes
+    public enum ResultStatusTypes
     {
         Success,
         Failure,
