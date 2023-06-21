@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LisaCore", "LisaCore.csproj", "{E1DFAD5C-9829-45D5-92F1-6BEFB14268FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrickSchema.Net", "..\BrickSchema.Net\BrickSchema.Net.csproj", "{1BBF83A4-82F6-4277-B359-31117BDFE607}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrickSchema.Net", "..\BrickSchema.Net\BrickSchema.Net.csproj", "{8BA36D58-06A6-43FD-8A4F-6C6D638334CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{E1DFAD5C-9829-45D5-92F1-6BEFB14268FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1DFAD5C-9829-45D5-92F1-6BEFB14268FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1DFAD5C-9829-45D5-92F1-6BEFB14268FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1BBF83A4-82F6-4277-B359-31117BDFE607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BBF83A4-82F6-4277-B359-31117BDFE607}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BBF83A4-82F6-4277-B359-31117BDFE607}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1BBF83A4-82F6-4277-B359-31117BDFE607}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA36D58-06A6-43FD-8A4F-6C6D638334CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA36D58-06A6-43FD-8A4F-6C6D638334CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA36D58-06A6-43FD-8A4F-6C6D638334CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA36D58-06A6-43FD-8A4F-6C6D638334CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,7 +13,7 @@ using LisaCore.Bot.Tasks;
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using LisaCore.Bot.Conversations;
-using Azure;
+
 using Microsoft.EntityFrameworkCore.Internal;
 using LisaCore.Nlp;
 using System.IO;

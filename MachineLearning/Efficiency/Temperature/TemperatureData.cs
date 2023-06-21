@@ -1,5 +1,4 @@
 ﻿using MachineLearningLibrary.DataModels;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;

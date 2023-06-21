@@ -2,7 +2,6 @@
 using BrickSchema.Net.Classes;
 using BrickSchema.Net.Relationships;
 using LisaCore.Behaviors;
-using LisaCore.Behaviors.DataAccess;
 using LisaCore.Behaviors.Enums;
 using LisaCore.Bot;
 using LisaCore.Interpreter;
@@ -30,7 +29,7 @@ namespace LisaCore
         private ILogger? _logger;
         private Dictionary<string, List<Conversion>> _conversations;
         private Bert? _bert = null;
-        private BrickSchemaManager _brick;
+        private BrickSchemaManager _graph;
         private bool _saveBrick = false;
         private BehaviorManager _behaviorManager;
         public Lisa(ILogger? logger = null)
@@ -60,7 +59,7 @@ namespace LisaCore
 
             Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(aiKnowledgeDirectory);
             string brickFile = Path.Combine(aiKnowledgeDirectory, "graph.json");
-            _brick = new BrickSchemaManager(brickFile);
+            _graph = new BrickSchemaManager(brickFile);
 
             _aiKnowledgeDirectory = aiKnowledgeDirectory;
             _chatlBot = new Chat(_aiKnowledgeDirectory);
@@ -104,24 +103,24 @@ namespace LisaCore
         #endregion Nlp
 
         #region Brick
-        public BrickSchemaManager BrickSchemaManager { get { return _brick; } }
+        public BrickSchemaManager Graph { get { return _graph; } }
 
 
         public List<BrickEntity> GetEquipmentEntities(List<string>? equipmentIds = null)
         {
-            List<BrickEntity> equipments = _brick.GetEquipments(equipmentIds ?? new()); ;
+            List<BrickEntity> equipments = _graph.GetEquipments(equipmentIds ?? new()); ;
             return equipments;
         }
 
         public List<BrickBehavior> GetEquipmentBehaviors(string equipmentId)
         {
-            var brickBehaviors = _brick.GetEquipmentBehaviors(equipmentId);
+            var brickBehaviors = _graph.GetEquipmentBehaviors(equipmentId);
             return brickBehaviors;
         }
 
         public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null)
         {
-            var brickBehaviors = _brick.GetBehaviors(behaviorIds??new());
+            var brickBehaviors = _graph.GetBehaviors(behaviorIds??new());
 
 
             return brickBehaviors;
@@ -131,23 +130,23 @@ namespace LisaCore
         {
             if (_saveBrick)
             {
-                _brick.SaveSchema();
+                _graph.SaveSchema();
             }
         }
 
         public void AddTenant(string id, string name)
         {
-            var tenant = _brick.AddTenant(id);
+            var tenant = _graph.AddTenant(id);
             tenant.Name = name;
         }
 
         public void AddLocation(LocationTypes type, string id, string name)
         {
-            bool save = !_brick.IsEntity(id);
+            bool save = !_graph.IsEntity(id);
             switch (type)
             {
                 case LocationTypes.Building:
-                    var bilding = _brick.AddLocationBuilding(id);
+                    var bilding = _graph.AddLocationBuilding(id);
                     if (!bilding.Name.Equals(name))
                     {
                         bilding.Name = name;
@@ -155,7 +154,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.CommonSpace:
-                    var commonSpace = _brick.AddLocationCommonSpace(id);
+                    var commonSpace = _graph.AddLocationCommonSpace(id);
                     if (!commonSpace.Name.Equals(name))
                     {
                         commonSpace.Name = name;
@@ -163,7 +162,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Entrance:
-                    var enterance = _brick.AddLocationEntrance(id);
+                    var enterance = _graph.AddLocationEntrance(id);
                     if (!enterance.Name.Equals(name))
                     {
                         enterance.Name = name;
@@ -171,7 +170,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Floor:
-                    var floor = _brick.AddLocationFloor(id);
+                    var floor = _graph.AddLocationFloor(id);
                     if (!floor.Name.Equals(name))
                     {
                         floor.Name = name;
@@ -179,7 +178,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.GateHouse:
-                    var gateHouse = _brick.AddLocationGateHouse(id);
+                    var gateHouse = _graph.AddLocationGateHouse(id);
                     if (!gateHouse.Name.Equals(name))
                     {
                         gateHouse.Name = name;
@@ -187,7 +186,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.MediaHotDesk:
-                    var mediaHotDesk = _brick.AddLocationMediaHotDesk(id);
+                    var mediaHotDesk = _graph.AddLocationMediaHotDesk(id);
                     if (!mediaHotDesk.Name.Equals(name))
                     {
                         mediaHotDesk.Name = name;
@@ -195,7 +194,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.OutdoorArea:
-                    var outdoorArea = _brick.AddLocationOutdoorArea(id);
+                    var outdoorArea = _graph.AddLocationOutdoorArea(id);
                     if (!outdoorArea.Name.Equals(name))
                     {
                         outdoorArea.Name = name;
@@ -203,7 +202,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Outside:
-                    var outside = _brick.AddLocationOutside(id);
+                    var outside = _graph.AddLocationOutside(id);
                     if (!outside.Name.Equals(name))
                     {
                         outside.Name = name;
@@ -211,7 +210,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Parking:
-                    var parking = _brick.AddLocationParking(id);
+                    var parking = _graph.AddLocationParking(id);
                     if (!parking.Name.Equals(name))
                     {
                         parking.Name = name;
@@ -219,7 +218,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Region:
-                    var region = _brick.AddLocationRegion(id);
+                    var region = _graph.AddLocationRegion(id);
                     if (!region.Name.Equals(name))
                     {
                         region.Name = name;
@@ -227,7 +226,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Room:
-                    var room = _brick.AddLocationRoom(id);
+                    var room = _graph.AddLocationRoom(id);
                     if (!room.Name.Equals(name))
                     {
                         room.Name = name;
@@ -235,7 +234,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Site:
-                    var site = _brick.AddLocationSite(id);
+                    var site = _graph.AddLocationSite(id);
                     if (!site.Name.Equals(name))
                     {
                         site.Name = name;
@@ -243,7 +242,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Space:
-                    var space = _brick.AddLocationSpace(id);
+                    var space = _graph.AddLocationSpace(id);
                     if (!space.Name.Equals(name))
                     {
                         space.Name = name;
@@ -251,7 +250,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Storey:
-                    var storey = _brick.AddLocationStorey(id);
+                    var storey = _graph.AddLocationStorey(id);
                     if (!storey.Name.Equals(name))
                     {
                         storey.Name = name;
@@ -259,7 +258,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.TicketingBooth:
-                    var ticketingBooth = _brick.AddLocationTicketingBooth(id);
+                    var ticketingBooth = _graph.AddLocationTicketingBooth(id);
                     if (!ticketingBooth.Name.Equals(name))
                     {
                         ticketingBooth.Name = name;
@@ -267,7 +266,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Tunnel:
-                    var tunnel = _brick.AddLocationTunnel(id);
+                    var tunnel = _graph.AddLocationTunnel(id);
                     if (!tunnel.Name.Equals(name))
                     {
                         tunnel.Name = name;
@@ -275,7 +274,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.VerticalSpace:
-                    var verticalSpace = _brick.AddLocationVerticalSpace(id);
+                    var verticalSpace = _graph.AddLocationVerticalSpace(id);
                     if (!verticalSpace.Name.Equals(name))
                     {
                         verticalSpace.Name = name;
@@ -283,7 +282,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.WaterTank:
-                    var waterTank = _brick.AddLocationWaterTank(id);
+                    var waterTank = _graph.AddLocationWaterTank(id);
                     if (!waterTank.Name.Equals(name))
                     {
                         waterTank.Name = name;
@@ -291,7 +290,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Wing:
-                    var wing = _brick.AddLocationWing(id);
+                    var wing = _graph.AddLocationWing(id);
                     if (!wing.Name.Equals(name))
                     {
                         wing.Name = name;
@@ -299,7 +298,7 @@ namespace LisaCore
                     }
                     break;
                 case LocationTypes.Zone:
-                    var zone = _brick.AddLocationZone(id);
+                    var zone = _graph.AddLocationZone(id);
                     if (!zone.Name.Equals(name))
                     {
                         zone.Name = name;
@@ -316,11 +315,11 @@ namespace LisaCore
 
         public void AddEquipment(EquipmentTypes type, string id, string name)
         {
-            bool save = !_brick.IsEntity(id);
+            bool save = !_graph.IsEntity(id);
             switch (type)
             {
                 case EquipmentTypes.AHU:
-                    var ahu = _brick.AddEquipmentHVACAHU(id);
+                    var ahu = _graph.AddEquipmentHVACAHU(id);
                     if (!ahu.Name.Equals(name))
                     {
                         ahu.Name = name;
@@ -328,7 +327,7 @@ namespace LisaCore
                     }
                     break;
                 case EquipmentTypes.Chiller:
-                    var chiller = _brick.AddEquipmentHVACChiller(id);
+                    var chiller = _graph.AddEquipmentHVACChiller(id);
                     if (!chiller.Name.Equals(name))
                     {
                         chiller.Name = name;
@@ -336,15 +335,23 @@ namespace LisaCore
                     }
                     break;
                 case EquipmentTypes.CoolingTower:
-                    var coolingTower = _brick.AddEquipmentHVACCoolingTower(id);
+                    var coolingTower = _graph.AddEquipmentHVACCoolingTower(id);
                     if (!coolingTower.Name.Equals(name))
                     {
                         coolingTower.Name = name;
                         save = true;
                     }
                     break;
+                case EquipmentTypes.FCU:
+                    var fcu = _graph.AddEquipmentHVACTerminalUnitFCU(id);
+                    if (!fcu.Name.Equals(name))
+                    {
+                        fcu.Name = name;
+                        save = true;
+                    }
+                    break;
                 case EquipmentTypes.Meter:
-                    var meter = _brick.AddEquipmentMeter(id);
+                    var meter = _graph.AddEquipmentMeter(id);
                     if (!meter.Name.Equals(name))
                     {
                         meter.Name = name;
@@ -352,7 +359,7 @@ namespace LisaCore
                     }
                     break;
                 case EquipmentTypes.Pump:
-                    var pump = _brick.AddEquipmentHVACPump(id);
+                    var pump = _graph.AddEquipmentHVACPump(id);
                     if (!pump.Name.Equals(name))
                     {
                         pump.Name = name;
@@ -360,7 +367,7 @@ namespace LisaCore
                     }
                     break;
                 case EquipmentTypes.VAV:
-                    var vav = _brick.AddEquipmentHVACTerminalUnitVAV(id);
+                    var vav = _graph.AddEquipmentHVACTerminalUnitVAV(id);
                     if (!vav.Name.Equals(name))
                     {
                         vav.Name = name;
@@ -376,67 +383,67 @@ namespace LisaCore
 
         public void AddPoint(PointTypes type, string id, string name, object? readFunction = null, object? writeFunction = null)
         {
-            bool save = !_brick.IsEntity(id);
+            bool save = !_graph.IsEntity(id);
             switch (type)
             {
                 case PointTypes.Alarm:
-                    var alarm = _brick.AddPointAlarm(id);
+                    var alarm = _graph.AddPointAlarm(id);
                     if (!alarm.Name.Equals(name))
                     {
                         alarm.Name = name;
                         save = true;
                     }
             
-                    AddBehavior(alarm.Id, new HistorizePointInMemory());
+                    
                     break;
                 case PointTypes.Command:
-                    var cmd = _brick.AddPointCommand(id);
+                    var cmd = _graph.AddPointCommand(id);
                     if (!cmd.Name.Equals(name))
                     {
                         cmd.Name = name;
                         save = true;
                     }
 
-                    AddBehavior(cmd.Id, new HistorizePointInMemory());
+                   
                     break;
                 case PointTypes.Parameter:
-                    var parameter = _brick.AddPointParameter(id);
+                    var parameter = _graph.AddPointParameter(id);
                     if (!parameter.Name.Equals(name))
                     {
                         parameter.Name = name;
                         save = true;
                     }
 
-                    AddBehavior(parameter.Id, new HistorizePointInMemory());
+                   
                     break;
                 case PointTypes.Sensor:
-                    var sensor = _brick.AddPointSensor(id);
+                    var sensor = _graph.AddPointSensor(id);
                     if (!sensor.Name.Equals(name))
                     {
                         sensor.Name = name;
                         save = true;
                     }
 
-                    AddBehavior(sensor.Id, new HistorizePointInMemory());
+                    
                     break;
                 case PointTypes.Setpoint:
-                    var setpoint = _brick.AddPointSetpoint(id);
+                    var setpoint = _graph.AddPointSetpoint(id);
                     if (!setpoint.Name.Equals(name))
                     {
                         setpoint.Name = name;
                         save = true;
                     }
-                    AddBehavior(setpoint.Id, new HistorizePointInMemory());
+                    
                     break;
                 case PointTypes.Status:
-                    var status = _brick.AddPointStatus(id);
+                    var status = _graph.AddPointStatus(id);
                     if (!status.Name.Equals(name))
                     {
                         status.Name = name;
                         save = true;
                     }
 
-                    AddBehavior(status.Id, new HistorizePointInMemory());
+                   
                     break;
             }
             if (save)
@@ -447,8 +454,8 @@ namespace LisaCore
 
         public Tag? AddTag(string name)
         {
-            bool save = !_brick.IsTag(name);
-            var tag = _brick.AddTag(name);
+            bool save = !_graph.IsTag(name);
+            var tag = _graph.AddTag(name);
 
             if (save)
             {
@@ -459,12 +466,12 @@ namespace LisaCore
 
         public Tag? GetTag(string name)
         {
-            return _brick.GetTag(name);
+            return _graph.GetTag(name);
         }
 
         public void AddRelationship(RelationshipTypes type, string id, string parentId)
         {
-            var entity = _brick.GetEntity(id);
+            var entity = _graph.GetEntity(id);
             if (entity != null)
             {
                 string RelationshipName = string.Empty;
@@ -534,7 +541,7 @@ namespace LisaCore
         {
             if (behavior == null) return;
 
-            var entity = _brick.GetEntity(entityId);
+            var entity = _graph.GetEntity(entityId);
             if (entity != null)
             {
                 if (!entity.RegisteredBehaviors.ContainsKey(behavior?.Type??string.Empty))
@@ -550,7 +557,7 @@ namespace LisaCore
 
         public void StartBehavior(string entityId, string type)
         {
-            var entity = _brick.GetEntity(entityId);
+            var entity = _graph.GetEntity(entityId);
             if (entity != null)
             {
                 var behaviors = entity.GetBehaviors(type);
@@ -564,7 +571,7 @@ namespace LisaCore
 
         public void StopBehavior(string entityId, string type)
         {
-            var entity = _brick.GetEntity(entityId);
+            var entity = _graph.GetEntity(entityId);
             if (entity != null)
             {
                 var behaviors = entity.GetBehaviors(type);

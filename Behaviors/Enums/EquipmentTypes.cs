@@ -11,6 +11,7 @@ namespace LisaCore.Behaviors.Enums
         AHU,
         Chiller,
         CoolingTower,
+        FCU,
         Pump,
         Meter,
         VAV
