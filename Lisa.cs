@@ -1,8 +1,8 @@
 ﻿using BrickSchema.Net;
 using BrickSchema.Net.Classes;
 using BrickSchema.Net.Relationships;
-using LisaCore.Behaviors;
-using LisaCore.Behaviors.Enums;
+using LisaCore.KnowledgeGraph;
+using LisaCore.KnowledgeGraph.Enums;
 using LisaCore.Bot;
 using LisaCore.Interpreter;
 using LisaCore.Nlp.BERT;
