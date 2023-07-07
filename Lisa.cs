@@ -118,6 +118,12 @@ namespace LisaCore
             return brickBehaviors;
         }
 
+        public Dictionary<string,string> GetRegisteredEquipmentBehaviors(string equipmentId)
+        {
+            var brickBehaviors = _graph.GetRegisteredEquipmentBehaviors(equipmentId);
+            return brickBehaviors;
+        }
+
         public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null)
         {
             var brickBehaviors = _graph.GetBehaviors(behaviorIds??new());
@@ -126,12 +132,11 @@ namespace LisaCore
             return brickBehaviors;
         }
        
-        public void SaveBrick()
+        public void SaveGraph()
         {
-            if (_saveBrick)
-            {
+            
                 _graph.SaveSchema();
-            }
+            
         }
 
         public void AddTenant(string id, string name)
@@ -548,9 +553,43 @@ namespace LisaCore
                 {
                     _saveBrick = true;
                 }
-                behavior.SetLogger(_logger);
-                _behaviorManager.Subscribe(behavior.OnTimerTick);
-                entity.AddBehavior(behavior);
+                
+
+                var behaviors = entity.GetBehaviors(behavior.Type);
+                if (behaviors.Count >= 1)
+                {
+                    for (int i = 0; i < behaviors.Count - 1; i++)
+                    {
+                        _behaviorManager.Unsubscribe(behaviors[i].OnTimerTick);
+                        entity.RemoveBehavior(behaviors[i]);
+                    }
+                    var foundBehavior = behaviors[behaviors.Count - 1];
+                    if (foundBehavior.Parent == null) foundBehavior.Parent = entity;
+
+
+                }
+                else
+                {
+
+                    if (entity.RegisteredBehaviors.ContainsKey(behavior.Type))
+                    {
+                        behavior.Id = entity.RegisteredBehaviors[behavior.Type];
+                    }
+                    else
+                    {
+                        entity.RegisteredBehaviors.Add(behavior.Type, behavior.Id);
+                    }
+                    if (!behavior.IsLogger)
+                    {
+                        behavior.SetLogger(_logger);
+                    }
+                    behavior.Parent = entity; //must set this before start
+                    behavior.Start();
+                    entity.Behaviors.Add(behavior);
+                    
+                    _behaviorManager.Subscribe(behavior.OnTimerTick);
+                }
+                //entity.AddBehavior(behavior);
             }
 
         }

@@ -63,7 +63,8 @@ namespace LisaCore.KnowledgeGraph
 
                 foreach (var subscriber in currentSubscribers)
                 {
-                    subscriber.Invoke();
+                    
+                    subscriber?.Invoke();
                 }
             }
             finally
