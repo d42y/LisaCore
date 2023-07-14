@@ -18,28 +18,60 @@ namespace LisaCore
     {
         public BrickSchemaManager Graph { get { return _graph; } }
 
-
-        public List<BrickEntity> GetEquipmentEntities(List<string>? equipmentIds = null)
+        public BrickEntity GetEntity(string id, bool byRefrence = false)
         {
-            List<BrickEntity> equipments = _graph.GetEquipments(equipmentIds ?? new()); ;
+            var entity = Graph.GetEntity(id);
+            return entity;
+        }
+
+        public List<BrickEntity> GetEntities(List<string>? entityIds = null, bool byReference = false)
+        {
+            List <BrickEntity>? entities= null;
+            if (entityIds == null || entityIds?.Count == 0)
+            {
+                entities = Graph.GetEntities(byReference);
+            }
+            else
+            {
+                entities = Graph.GetEntities(byReference).Where(x=> entityIds?.Contains(x.Id)??false).ToList();
+            }
+            return entities;
+        }
+        public List<BrickEntity> GetEntities<T>(List<string>? entityIds = null, bool byReference = false)
+        {
+            List<BrickEntity>? entities = null;
+            if (entityIds == null || entityIds?.Count == 0)
+            {
+                entities = Graph.GetEntities<T>(byReference);
+            }
+            else
+            {
+                entities = Graph.GetEntities<T>(byReference).Where(x => entityIds?.Contains(x.Id) ?? false).ToList();
+            }
+            return entities;
+        }
+
+        public List<BrickEntity> GetEquipmentEntities(List<string>? equipmentIds = null, bool byReference = false)
+        {
+            List<BrickEntity> equipments = _graph.GetEquipments(equipmentIds ?? new(), byReference); ;
             return equipments;
         }
 
-        public List<BrickBehavior> GetEquipmentBehaviors(string equipmentId)
+        public List<BrickBehavior> GetEquipmentBehaviors(string equipmentId, bool byReference = false)
         {
             var brickBehaviors = _graph.GetEquipmentBehaviors(equipmentId);
             return brickBehaviors;
         }
 
-        public Dictionary<string, string> GetRegisteredEquipmentBehaviors(string equipmentId)
+        public Dictionary<string, string> GetRegisteredEquipmentBehaviors(string equipmentId, bool byReference = false)
         {
-            var brickBehaviors = _graph.GetRegisteredEquipmentBehaviors(equipmentId);
+            var brickBehaviors = _graph.GetRegisteredEquipmentBehaviors(equipmentId, byReference);
             return brickBehaviors;
         }
 
-        public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null)
+        public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null, bool byReference = false)
         {
-            var brickBehaviors = _graph.GetBehaviors(behaviorIds ?? new());
+            var brickBehaviors = _graph.GetBehaviors(behaviorIds ?? new(), byReference);
 
 
             return brickBehaviors;

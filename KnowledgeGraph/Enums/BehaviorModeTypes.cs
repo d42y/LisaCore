@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LisaCore.KnowledgeGraph.Enums
 {
-    public enum BehaviorTypes
+    public enum BehaviorModeTypes
     {
         Analytics,
         DataAccess
