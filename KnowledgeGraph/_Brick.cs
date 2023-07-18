@@ -20,11 +20,11 @@ namespace LisaCore
 
         public BrickEntity GetEntity(string id, bool byRefrence = false)
         {
-            var entity = Graph.GetEntity(id);
+            var entity = Graph.GetEntity(id, byRefrence);
             return entity;
         }
 
-        public List<BrickEntity> GetEntities(List<string>? entityIds = null, bool byReference = false)
+        public List<BrickEntity> GetEntities(List<string>? entityIds = null, bool byReference = true)
         {
             List <BrickEntity>? entities= null;
             if (entityIds == null || entityIds?.Count == 0)
@@ -37,7 +37,7 @@ namespace LisaCore
             }
             return entities;
         }
-        public List<BrickEntity> GetEntities<T>(List<string>? entityIds = null, bool byReference = false)
+        public List<BrickEntity> GetEntities<T>(List<string>? entityIds = null, bool byReference = true)
         {
             List<BrickEntity>? entities = null;
             if (entityIds == null || entityIds?.Count == 0)
@@ -51,25 +51,25 @@ namespace LisaCore
             return entities;
         }
 
-        public List<BrickEntity> GetEquipmentEntities(List<string>? equipmentIds = null, bool byReference = false)
+        public List<BrickEntity> GetEquipmentEntities(List<string>? equipmentIds = null, bool byReference = true)
         {
             List<BrickEntity> equipments = _graph.GetEquipments(equipmentIds ?? new(), byReference); ;
             return equipments;
         }
 
-        public List<BrickBehavior> GetEquipmentBehaviors(string equipmentId, bool byReference = false)
+        public List<BrickBehavior> GetEquipmentBehaviors(string equipmentId, bool byReference = true)
         {
-            var brickBehaviors = _graph.GetEquipmentBehaviors(equipmentId);
+            var brickBehaviors = _graph.GetEquipmentBehaviors(equipmentId, byReference);
             return brickBehaviors;
         }
 
-        public Dictionary<string, string> GetRegisteredEquipmentBehaviors(string equipmentId, bool byReference = false)
+        public Dictionary<string, string> GetRegisteredEquipmentBehaviors(string equipmentId, bool byReference = true)
         {
             var brickBehaviors = _graph.GetRegisteredEquipmentBehaviors(equipmentId, byReference);
             return brickBehaviors;
         }
 
-        public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null, bool byReference = false)
+        public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null, bool byReference = true)
         {
             var brickBehaviors = _graph.GetBehaviors(behaviorIds ?? new(), byReference);
 
@@ -390,14 +390,14 @@ namespace LisaCore
             return tag;
         }
 
-        public Tag? GetTag(string name)
+        public Tag? GetTag(string name, bool byReference = false)
         {
-            return _graph.GetTag(name);
+            return _graph.GetTag(name, byReference);
         }
 
         public void AddRelationship(RelationshipTypes type, string id, string parentId)
         {
-            var entity = _graph.GetEntity(id);
+            var entity = _graph.GetEntity(id, true);
             if (entity != null)
             {
                 string RelationshipName = string.Empty;
@@ -467,10 +467,10 @@ namespace LisaCore
         {
             if (behavior == null) return;
 
-            var entity = _graph.GetEntity(entityId);
+            var entity = _graph.GetEntity(entityId, true);
             if (entity != null)
             {
-                var behaviors = entity.GetBehaviors(behavior.Type);
+                var behaviors = entity.GetBehaviors(behavior.Type, true);
                 if (behaviors.Count >= 1)
                 {
                     for (int i = 0; i < behaviors.Count - 1; i++)
@@ -507,10 +507,10 @@ namespace LisaCore
 
         public void StartBehavior(string entityId, string type)
         {
-            var entity = _graph.GetEntity(entityId);
+            var entity = _graph.GetEntity(entityId, true);
             if (entity != null)
             {
-                var behaviors = entity.GetBehaviors(type);
+                var behaviors = entity.GetBehaviors(type, true);
                 foreach (var behavior in behaviors)
                 {
                     behavior.Start();
@@ -521,10 +521,10 @@ namespace LisaCore
 
         public void StopBehavior(string entityId, string type)
         {
-            var entity = _graph.GetEntity(entityId);
+            var entity = _graph.GetEntity(entityId, true);
             if (entity != null)
             {
-                var behaviors = entity.GetBehaviors(type);
+                var behaviors = entity.GetBehaviors(type, true);
                 foreach (var behavior in behaviors)
                 {
                     behavior.Stop();
